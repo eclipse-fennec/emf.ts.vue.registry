@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { EObject, EAttribute, EEnum, EEnumLiteral } from 'emfts';
+import type { EObject, EAttribute, EEnum, EEnumLiteral } from '@emfts/core';
 
 interface Props {
   eObject: EObject;

@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { EClass } from 'emfts';
+import type { EClass } from '@emfts/core';
 import type { RegistrationOptions } from '../types';
 import { decoratorRegistry } from './DecoratorRegistry';
 

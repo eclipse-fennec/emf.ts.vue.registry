@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { EObject, EClass, EStructuralFeature, EAttribute, EReference, EEnum } from 'emfts';
+import type { EObject, EClass, EStructuralFeature, EAttribute, EReference, EEnum } from '@emfts/core';
 import type {
   ComponentDescriptor,
   MatchContext,

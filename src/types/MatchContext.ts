@@ -6,7 +6,7 @@ import type {
   EReference,
   EEnum,
   EPackage,
-} from 'emfts';
+} from '@emfts/core';
 
 /**
  * Context provided when matching components.

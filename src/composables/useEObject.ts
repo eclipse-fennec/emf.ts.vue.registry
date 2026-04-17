@@ -1,5 +1,5 @@
 import { ref, computed, watch, type Ref } from 'vue';
-import type { EObject, EStructuralFeature, EClass } from 'emfts';
+import type { EObject, EStructuralFeature, EClass } from '@emfts/core';
 
 /**
  * Options for the useEObject composable.

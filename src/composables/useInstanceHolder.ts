@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import type { EObject, EClass } from 'emfts';
+import type { EObject, EClass } from '@emfts/core';
 
 /**
  * Instance holder for managing EObject instances.

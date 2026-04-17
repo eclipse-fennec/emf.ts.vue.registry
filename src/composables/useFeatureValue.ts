@@ -1,5 +1,5 @@
 import { computed, ref, watch, type Ref, type ComputedRef } from 'vue';
-import type { EObject, EStructuralFeature } from 'emfts';
+import type { EObject, EStructuralFeature } from '@emfts/core';
 
 /**
  * Options for the useFeatureValue composable.

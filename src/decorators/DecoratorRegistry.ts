@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { EPackage, EClass, EEnum } from 'emfts';
+import type { EPackage, EClass, EEnum } from '@emfts/core';
 import type { RegistrationTarget, RegistrationOptions, LazyTarget } from '../types';
 import { componentRegistry } from '../registry/ComponentRegistry';
 

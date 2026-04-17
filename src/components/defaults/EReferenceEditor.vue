@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, inject } from 'vue';
-import type { EObject, EReference, EClass } from 'emfts';
+import type { EObject, EReference, EClass } from '@emfts/core';
 
 interface Props {
   eObject: EObject;

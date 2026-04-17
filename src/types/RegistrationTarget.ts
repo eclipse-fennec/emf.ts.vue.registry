@@ -1,4 +1,4 @@
-import type { EClass, EDataType, EEnum, EObject } from 'emfts';
+import type { EClass, EDataType, EEnum, EObject } from '@emfts/core';
 import type { MatchContext, MatchResult } from './MatchContext';
 
 /**

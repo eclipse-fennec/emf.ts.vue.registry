@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { EEnum } from 'emfts';
+import type { EEnum } from '@emfts/core';
 import type { RegistrationOptions } from '../types';
 import { decoratorRegistry } from './DecoratorRegistry';
 

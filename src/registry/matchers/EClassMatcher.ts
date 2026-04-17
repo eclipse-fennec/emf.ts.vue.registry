@@ -1,4 +1,4 @@
-import type { EClass } from 'emfts';
+import type { EClass } from '@emfts/core';
 import type { MatchContext, MatchResult } from '../../types';
 import { Priority, noMatch, match } from '../../types';
 

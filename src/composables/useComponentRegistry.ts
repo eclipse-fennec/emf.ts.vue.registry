@@ -1,5 +1,5 @@
 import { inject, type Component } from 'vue';
-import type { EObject, EClass, EStructuralFeature } from 'emfts';
+import type { EObject, EClass, EStructuralFeature } from '@emfts/core';
 import { ComponentRegistry, componentRegistry } from '../registry/ComponentRegistry';
 import type { MatchContext } from '../types';
 

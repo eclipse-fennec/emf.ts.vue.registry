@@ -24,7 +24,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue', 'emfts'],
+      external: ['vue', '@emfts/core'],
       output: {
         globals: {
           vue: 'Vue',
