@@ -50,6 +50,9 @@
     "model-driven",
     "emfts"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "EPL-2.0",
   "repository": {
     "type": "git",
