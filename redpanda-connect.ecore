@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="rpconnect" nsURI="http://redpanda.com/connect/1.0" nsPrefix="rpc">
+  
+  <!-- ==================== Root Element ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Stream">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Root element of a Redpanda Connect pipeline configuration"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" lowerBound="1" eType="#//Input" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="buffer" eType="#//Buffer" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pipeline" eType="#//Pipeline" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" lowerBound="1" eType="#//Output" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="resources" eType="#//Resources" containment="true"/>
+  </eClassifiers>
+  
+  <!-- ==================== Pipeline ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Pipeline">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="threads" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processors" upperBound="-1" eType="#//Processor" containment="true"/>
+  </eClassifiers>
+  
+  <!-- ==================== Abstract Component Base ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Abstract base for all configurable components"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional label for metrics and logging"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  
+  <!-- ==================== Input ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Input" abstract="true" eSuperTypes="#//Component"/>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="GenericInput" eSuperTypes="#//Input">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="config" upperBound="-1" eType="#//ConfigEntry" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="KafkaInput" eSuperTypes="#//Input">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="addresses" lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topics" lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="consumerGroup" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startFromOldest" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tls" eType="#//TLSConfig" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sasl" eType="#//SASLConfig" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="HttpServerInput" eSuperTypes="#//Input">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="address" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="0.0.0.0:4195"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="/post"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeout" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="5s"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="MqttInput" eSuperTypes="#//Input">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="addresses" lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topics" lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="clientId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="qos" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="GenerateInput" eSuperTypes="#//Input">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapping" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interval" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="1s"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
+  </eClassifiers>
+  
+  <!-- ==================== Output ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Output" abstract="true" eSuperTypes="#//Component"/>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="GenericOutput" eSuperTypes="#//Output">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="config" upperBound="-1" eType="#//ConfigEntry" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="KafkaOutput" eSuperTypes="#//Output">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="addresses" lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topic" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="partitioner" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="fnv1a_hash"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tls" eType="#//TLSConfig" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sasl" eType="#//SASLConfig" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="HttpClientOutput" eSuperTypes="#//Output">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="POST"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="headers" upperBound="-1" eType="#//Header" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeout" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="5s"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="retries" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="3"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contentType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="application/json"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="MqttOutput" eSuperTypes="#//Output">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="addresses" lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topic" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="clientId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="qos" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="StdoutOutput" eSuperTypes="#//Output">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="codec" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="lines"/>
+  </eClassifiers>
+  
+  <!-- ==================== Processor ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Processor" abstract="true" eSuperTypes="#//Component"/>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="GenericProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="config" upperBound="-1" eType="#//ConfigEntry" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="MappingProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapping" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="LogProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="level" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="INFO"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fields" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="CacheProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resource" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" lowerBound="1" eType="#//CacheOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="BranchProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="requestMap" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processors" upperBound="-1" eType="#//Processor" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultMap" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1" eType="#//SwitchCase" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchCase">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="check" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processors" upperBound="-1" eType="#//Processor" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="CatchProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processors" upperBound="-1" eType="#//Processor" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="RetryProcessor" eSuperTypes="#//Processor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxRetries" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="3"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backoffInitial" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="500ms"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backoffMax" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="3s"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processors" upperBound="-1" eType="#//Processor" containment="true"/>
+  </eClassifiers>
+  
+  <!-- ==================== Buffer ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Buffer" abstract="true"/>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="MemoryBuffer" eSuperTypes="#//Buffer">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="limit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="524288"/>
+  </eClassifiers>
+  
+  <!-- ==================== Resources ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Resources">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="caches" upperBound="-1" eType="#//CacheResource" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateLimits" upperBound="-1" eType="#//RateLimitResource" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" upperBound="-1" eType="#//Input" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputs" upperBound="-1" eType="#//Output" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processors" upperBound="-1" eType="#//Processor" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="CacheResource">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cache" lowerBound="1" eType="#//Cache" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Cache" abstract="true"/>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="MemoryCache" eSuperTypes="#//Cache">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ttl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="300s"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="compactionInterval" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="60s"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="RedisCache" eSuperTypes="#//Cache">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="prefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ttl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="300s"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="RateLimitResource">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateLimit" lowerBound="1" eType="#//RateLimit" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="RateLimit" abstract="true"/>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="LocalRateLimit" eSuperTypes="#//RateLimit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="count" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interval" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <!-- ==================== Common/Shared Types ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EClass" name="ConfigEntry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Header">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="TLSConfig">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="skipCertVerify" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rootCas" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="clientCerts" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="SASLConfig">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mechanism" lowerBound="1" eType="#//SASLMechanism"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="user" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="password" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <!-- ==================== Enums ==================== -->
+  
+  <eClassifiers xsi:type="ecore:EEnum" name="SASLMechanism">
+    <eLiterals name="PLAIN" value="0"/>
+    <eLiterals name="SCRAM_SHA_256" value="1" literal="SCRAM-SHA-256"/>
+    <eLiterals name="SCRAM_SHA_512" value="2" literal="SCRAM-SHA-512"/>
+    <eLiterals name="OAUTHBEARER" value="3"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EEnum" name="CacheOperator">
+    <eLiterals name="get" value="0"/>
+    <eLiterals name="set" value="1"/>
+    <eLiterals name="add" value="2"/>
+    <eLiterals name="delete" value="3"/>
+  </eClassifiers>
+  
+</ecore:EPackage>
