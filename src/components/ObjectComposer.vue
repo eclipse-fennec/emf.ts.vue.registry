@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
-import type { EObject, EStructuralFeature } from 'emfts';
+import type { EObject, EStructuralFeature } from '@emfts/core';
 import type { ComponentRegistry } from '../registry/ComponentRegistry';
 
 interface Props {

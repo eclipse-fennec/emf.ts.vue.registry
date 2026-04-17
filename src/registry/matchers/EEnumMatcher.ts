@@ -1,4 +1,4 @@
-import type { EEnum, EAttribute } from 'emfts';
+import type { EEnum, EAttribute } from '@emfts/core';
 import type { MatchContext, MatchResult } from '../../types';
 import { Priority, noMatch, match } from '../../types';
 
