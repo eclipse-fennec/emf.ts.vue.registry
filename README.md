@@ -56,6 +56,18 @@ class StringEditor { /* ... */ }
 class PersonNameEditor { /* ... */ }
 ```
 
+## Deployment & Artifacts
+
+| | |
+|---|---|
+| Registry | [npmjs.com](https://www.npmjs.com/package/@emfts/vue-registry) |
+| Package | [`@emfts/vue-registry`](https://www.npmjs.com/package/@emfts/vue-registry) (public) |
+| Build output | `dist/` (ESM) — only `dist` is published (see `files` in `package.json`) |
+| Source | <https://github.com/eclipse-fennec/emf.ts.vue.registry> (default branch `main`) |
+| Project | [Eclipse Fennec](https://projects.eclipse.org/projects/modeling.fennec) |
+
+Releases are published to the npm registry under the `@emfts` scope.
+
 ## License
 
-[EPL-2.0](https://www.eclipse.org/legal/epl-2.0/)
+[EPL-2.0](https://www.eclipse.org/legal/epl-2.0/) — see [`LICENSE`](./LICENSE).
