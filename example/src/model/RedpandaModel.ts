@@ -1,7 +1,7 @@
 /**
  * Redpanda Connect pipeline model - parsed from redpanda-connect.ecore
  */
-import ecoreXml from '../../../redpanda-connect.ecore?raw';
+import ecoreXml from '../../redpanda-connect.ecore?raw';
 import {
   XMIResource,
   EResourceSetImpl,
