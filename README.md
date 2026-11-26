@@ -41,6 +41,32 @@ const app = createApp(App);
 app.use(EmftsRendererPlugin);
 ```
 
+### Default editors
+
+`EStringEditor`, `EIntEditor`, `EBooleanEditor`, `EDateEditor`,
+`EEnumEditor` and `EReferenceEditor` render a feature from `eObject` and
+`feature`. The caller may override what the editor would otherwise derive
+from the feature — a label instead of `name (EType)`, the required flag
+instead of the multiplicity — and hand in the result of its own
+validation:
+
+```vue
+<EStringEditor
+  :e-object="order"
+  :feature="deliveryDateFeature"
+  label="Delivery date"
+  placeholder="dd.mm.yyyy"
+  :required="true"
+  :readonly="false"
+  :invalid="!!message"
+  :validation-message="message"
+/>
+```
+
+Declaring `validationMessage` is also the signal to
+[`@emfts/uimodel-composer`](https://github.com/eclipse-fennec/emf.ts.ui)
+that the editor shows the message itself.
+
 ### Decorators
 
 ```typescript
