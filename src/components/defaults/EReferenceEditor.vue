@@ -6,6 +6,16 @@ interface Props {
   eObject: EObject;
   feature: EReference;
   readonly?: boolean;
+  /** Angezeigtes Label; ersetzt die Ableitung aus Name und Typ (#22). */
+  label?: string;
+  /** Platzhalter des Eingabefelds. */
+  placeholder?: string;
+  /** Pflichtfeld; ersetzt die Ableitung aus der Multiplizität. */
+  required?: boolean;
+  /** Das Feld ist ungültig — der Aufrufer hat validiert. */
+  invalid?: boolean;
+  /** Meldung zur fehlgeschlagenen Validierung. */
+  validationMessage?: string;
 }
 
 const props = defineProps<Props>();
@@ -119,21 +129,22 @@ function toggleMultiValue(id: string) {
   }
 }
 
-const label = computed(() => {
+const displayLabel = computed(() => {
+  if (props.label !== undefined) return props.label;
   const name = props.feature.getName?.() ?? 'unknown';
   const typeName = referenceType.value?.getName?.() ?? 'Reference';
   const multi = isMultiValued.value ? '[]' : '';
   return `${name} (${typeName}${multi})`;
 });
 
-const isRequired = computed(() => props.feature.isRequired?.() ?? false);
+const isRequired = computed(() => props.required ?? props.feature.isRequired?.() ?? false);
 const featureName = computed(() => props.feature.getName?.() ?? 'field');
 </script>
 
 <template>
   <div class="emfts-reference-editor">
     <label :for="featureName">
-      {{ label }}
+      {{ displayLabel }}
       <span v-if="isRequired" class="required">*</span>
     </label>
 
@@ -143,6 +154,7 @@ const featureName = computed(() => props.feature.getName?.() ?? 'field');
       :id="featureName"
       v-model="singleValue"
       :disabled="readonly"
+      :aria-invalid="invalid || undefined"
       :required="isRequired"
       class="emfts-select"
     >
@@ -165,6 +177,7 @@ const featureName = computed(() => props.feature.getName?.() ?? 'field');
           type="checkbox"
           :checked="selectedMulti.includes(opt.id)"
           :disabled="readonly"
+        :aria-invalid="invalid || undefined"
           @click.stop
           @change="toggleMultiValue(opt.id)"
         />
@@ -174,6 +187,9 @@ const featureName = computed(() => props.feature.getName?.() ?? 'field');
         No available instances
       </div>
     </div>
+    <p v-if="validationMessage" class="emfts-validation-message" role="alert">
+      {{ validationMessage }}
+    </p>
   </div>
 </template>
 
@@ -259,5 +275,11 @@ const featureName = computed(() => props.feature.getName?.() ?? 'field');
   color: #6b7280;
   font-style: italic;
   text-align: center;
+}
+
+.emfts-validation-message {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #b91c1c;
 }
 </style>

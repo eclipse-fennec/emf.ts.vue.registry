@@ -6,6 +6,16 @@ interface Props {
   eObject: EObject;
   feature: EAttribute;
   readonly?: boolean;
+  /** Angezeigtes Label; ersetzt die Ableitung aus Name und Typ (#22). */
+  label?: string;
+  /** Platzhalter des Eingabefelds. */
+  placeholder?: string;
+  /** Pflichtfeld; ersetzt die Ableitung aus der Multiplizität. */
+  required?: boolean;
+  /** Das Feld ist ungültig — der Aufrufer hat validiert. */
+  invalid?: boolean;
+  /** Meldung zur fehlgeschlagenen Validierung. */
+  validationMessage?: string;
 }
 
 const props = defineProps<Props>();
@@ -19,7 +29,8 @@ const value = computed({
   },
 });
 
-const label = computed(() => {
+const displayLabel = computed(() => {
+  if (props.label !== undefined) return props.label;
   const name = props.feature.getName?.() ?? 'unknown';
   return name;
 });
@@ -35,10 +46,14 @@ const featureName = computed(() => props.feature.getName?.() ?? 'field');
         v-model="value"
         type="checkbox"
         :disabled="readonly"
+        :aria-invalid="invalid || undefined"
         class="emfts-checkbox"
       />
-      <span class="checkbox-text">{{ label }}</span>
+      <span class="checkbox-text">{{ displayLabel }}</span>
     </label>
+    <p v-if="validationMessage" class="emfts-validation-message" role="alert">
+      {{ validationMessage }}
+    </p>
   </div>
 </template>
 
@@ -70,5 +85,11 @@ const featureName = computed(() => props.feature.getName?.() ?? 'field');
   font-size: 0.875rem;
   font-weight: 500;
   color: #374151;
+}
+
+.emfts-validation-message {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #b91c1c;
 }
 </style>
